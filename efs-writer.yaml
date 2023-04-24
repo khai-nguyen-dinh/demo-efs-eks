@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-writer-1
+  namespace: storage
+spec:
+  containers:
+  - name: efs-writer-1
+    image: busybox
+    command: ["/bin/sh"]    
+    args: ["-c", "while true; do echo $POD_NAME.$POD_NAMESPACE - $(date -u) >> /shared/out.txt; sleep 5; done"]
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name    
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace           
+    volumeMounts:
+    - name: efs-pvc
+      mountPath: /shared
+  volumes:
+  - name: efs-pvc
+    persistentVolumeClaim:
+      claimName: efs-storage-claim
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-writer-2
+  namespace: storage
+spec:
+  containers:
+  - name: efs-writer-2
+    image: busybox
+    command: ["/bin/sh"]    
+    args: ["-c", "while true; do echo $POD_NAME.$POD_NAMESPACE - $(date -u) >> /shared/out.txt; sleep 5; done"]
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name    
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace           
+    volumeMounts:
+    - name: efs-pvc
+      mountPath: /shared
+  volumes:
+  - name: efs-pvc
+    persistentVolumeClaim:
+      claimName: efs-storage-claim
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-writer-3
+  namespace: storage
+spec:
+  containers:
+  - name: efs-writer-3
+    image: busybox
+    command: ["/bin/sh"]    
+    args: ["-c", "while true; do echo $POD_NAME.$POD_NAMESPACE - $(date -u) >> /shared/out.txt; sleep 5; done"]
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name    
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace           
+    volumeMounts:
+    - name: efs-pvc
+      mountPath: /shared
+  volumes:
+  - name: efs-pvc
+    persistentVolumeClaim:
+      claimName: efs-storage-claim
